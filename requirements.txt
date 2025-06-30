@@ -1,0 +1,6 @@
+django==4.2
+django-filter==25.1
+django-tables2==2.7.5
+polars==1.31.0
+django-crispy-forms==2.4
+crispy-bootstrap5==2025.6

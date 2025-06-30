@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<form action="{% url 'signup' %}" method="POST" style="view-transition-name: sign-form;">
+    {% csrf_token %}
+    <h2 class="form-signup-heading">Sign Up</h2>
+    {{ form | crispy }}
+    <div class="d-flex flex-column justify-content-center align-items-center gap-2">
+        <button class="btn btn-primary align-items-end justify-content-center px-5" style="view-transition-name: home;">Register</button>
+        <p>You already have an account? <a href="{% url 'login' %}" class="btn" style="view-transition-name: login-form;">Sign In</a></p>
+    </div>
+</form>
+{% endblock %}
