@@ -1,79 +1,103 @@
-#Stock App
+# 📦 Stock App
 
-Stock and order management web application, built with Django.
+Stock and Order Management web application built with Django 🧩
 
-## Features
+---
 
-- User management (registration, login, logout, profile)
-- Store management
-- Product management per store
-- Order management per user
-- Interactive tables using [django-tables2](https://django-tables2.readthedocs.io/)
-- Styled forms with [django-crispy-forms](https://django-crispy-forms.readthedocs.io/) and Bootstrap 5
+## ✨ Features
 
-## Project Structure
+- 🔐 **User management** (registration, login, logout, profile)
+- 🏬 **Store management**
+- 📦 **Product management per store**
+- 📝 **Order management per user**
+- 📊 **Interactive tables** using `django-tables2`
+- 🎨 **Styled forms** with `django-crispy-forms` + Bootstrap 5
 
-- `app/`: Main Django configuration (settings, urls, wsgi, asgi)
-- `stock/`: Main application with models, views, forms, components, and templates
-- `static/`: Static files (CSS, JS, Bootstrap)
-- `templates/`: HTML templates
+---
 
-## Installation
+## 🧱 Project Structure
+
+```
+app/        → Main Django config (settings, urls, wsgi, asgi)
+stock/      → Main logic (models, views, forms, templates, components)
+static/     → Static assets (CSS, JS, Bootstrap)
+templates/  → HTML templates
+```
+
+---
+
+## 🚀 Installation
 
 1. **Clone the repository**
-```sh
-git clone <repo-url>
-cd stock_app
-```
+    ```sh
+    git clone <repo-url>
+    cd stock_app
+    ```
 
-2. **Create a virtual environment and activate it**
-```sh
-python -m venv venv
-source venv/bin/activate
-```
+2. **Create and activate a virtual environment**
+    ```sh
+    python -m venv venv
+    source venv/bin/activate  
+    # On Windows: 
+    venv\Scripts\activate
+    ```
 
 3. **Install dependencies**
-```sh
-pip install -r requirements.txt
-```
+    ```sh
+    pip install -r requirements.txt
+    ```
 
-4. **Apply migrations**
-```sh
-python manage.py migrate
-```
+4. **Apply database migrations**
+    ```sh
+    python manage.py migrate
+    ```
 
-5. **Create a superuser (optional)**
-```sh
-python manage.py createsuperuser
-```
+5. **(Optional) Create a superuser**
+    ```sh
+    python manage.py createsuperuser
+    ```
 
-6. **Run the server**
-```sh
-python manage.py runserver
-```
+6. **Run the development server**
+    ```sh
+    python manage.py runserver
+    ```
 
-## Usage
+---
 
-- Access the application at http://localhost:8000/
-- Sign up or log in to manage stores, products, and orders.
+## 🧪 Usage
 
-## Core Dependencies
+Open your browser at 👉 [http://localhost:8000/](http://localhost:8000/)
 
-- Django 4.2
-- django-tables2
-- django-crispy-forms
-- crispy-bootstrap5
-- django-filter
-- polars
+Sign up or log in to manage stores, products, and orders.
 
-## Model Structure
+---
 
-- **Store**: name, location, capacity
-- **Product**: name, price, type, model, related store
-- **Order**: product, user, date
+## ⚙️ Core Dependencies
 
-## Customization
+- 🌐 Django 4.2
+- 📊 django-tables2
+- 🎨 django-crispy-forms
+- 💠 crispy-bootstrap5
+- 🔍 django-filter
+- ⚡ polars
 
-- Styles use Bootstrap 4/5 and can be modified in `stock/static/css/`.
-- Tables can be customized in `stock/components/tables.py`.
-- Forms use crispy-forms and can be customized in `stock/forms.py`.
+---
+
+## 🧬 Model Overview
+
+- 👤 **User**: `username`, `email`, `password`, `is_superuser`
+- 🏬 **Store**: `name`, `location`, `capacity`
+- 📦 **Product**: `name`, `price`, `type`, `model`, `related_store`
+- 🧾 **Order**: `product`, `user`, `date`
+
+---
+
+## 🎨 Customization
+
+- 💅 **Styles**: Located in `stock/static/css/` (uses Bootstrap 4/5)
+- 📋 **Tables**: Customizable in `stock/components/tables.py`
+- 📝 **Forms**: Built with crispy-forms, editable in `stock/forms.py`
+
+---
+
+Ready to manage your stock like a pro? Let’s go! 🚀
