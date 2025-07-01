@@ -5,18 +5,13 @@ from django.contrib.auth.models import User
 
 class UserTable(tables.Table):
 
-    create = tables.TemplateColumn(
-        template_code='''
-            <a class="link" href="{% url 'form_Personas' %}" class="btn btn-success btn-sm">Create</a>''',
-        orderable=False,
-        verbose_name='Acciones'
-    )
-
     edit = tables.TemplateColumn(
         template_code='''
-            <a class="link" href="{% url 'Personas' %}" class="btn btn-primary btn-sm">Edit</a>''',
+            <a href="{% url 'store_form' %}" >
+                <i class="fa fa-pen fa-sm text-success"></i>
+            </a>''',
         orderable=False,
-        verbose_name=''
+        verbose_name='Actions'
     )
 
     class Meta:
@@ -27,18 +22,19 @@ class UserTable(tables.Table):
 
 class StoreTable(tables.Table):
 
-    create = tables.TemplateColumn(
-        template_code='''
-            <a class="link" href="{% url 'form_Personas' %}" class="btn btn-success btn-sm">Create</a>''',
-        orderable=False,
-        verbose_name='Acciones'
+    products = tables.LinkColumn(
+        'products',
+        args=[tables.A('id')],
+        verbose_name='Products'
     )
 
     edit = tables.TemplateColumn(
         template_code='''
-            <a class="link" href="{% url 'Personas' %}" class="btn btn-primary btn-sm">Edit</a>''',
+            <a href="{% url 'store_form' %}" >
+                <i class="fa fa-pen fa-sm text-success"></i>
+            </a>''',
         orderable=False,
-        verbose_name=''
+        verbose_name='Actions'
     )
 
     class Meta:
@@ -49,18 +45,13 @@ class StoreTable(tables.Table):
 
 class ProductTable(tables.Table):
 
-    create = tables.TemplateColumn(
-        template_code='''
-            <a class="link" href="{% url 'form_Personas' %}" class="btn btn-success btn-sm">Create</a>''',
-        orderable=False,
-        verbose_name='Acciones'
-    )
-
     edit = tables.TemplateColumn(
         template_code='''
-            <a class="link" href="{% url 'Personas' %}" class="btn btn-primary btn-sm">Edit</a>''',
+            <a href="{% url 'product_item' record.id %}" >
+                <i class="fa fa-pen fa-sm text-success"></i>
+            </a>''',
         orderable=False,
-        verbose_name=''
+        verbose_name='Actions'
     )
 
     class Meta:
