@@ -1,87 +1,71 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 
 from stock.models import Store, Product, Order
 from stock.forms import StoreForm, ProductForm, OrderForm
 
 
 @login_required
-def store_form(request):
+def store_item(request, id):
     template_name = 'form_generic.html'
 
+    store = get_object_or_404(Store, id=id)
+
     if request.method == 'POST':
-        form = StoreForm(request.POST)
+        form = StoreForm(request.POST, instance=store)
 
         if form.is_valid():
             form.save()
             return redirect('stores')
-    
     else:
-        form = StoreForm()
-    
+        form = StoreForm(instance=store)
+
     context = {
-        'form': form
+        'form': form,
     }
 
     return render(request, context=context, template_name=template_name)
 
 
 @login_required
-def product_form(request, store_id, product_id):
+def product_item(request, id):
     template_name = 'form_generic.html'
 
-    store = get_object_or_404(Store, id=store_id)
-    product = get_object_or_404(Product, id=product_id, related_store=store)
+    product = get_object_or_404(Product, id=id)
 
     if request.method == 'POST':
-        form = ProductForm(request.POST)
+        form = ProductForm(request.POST, instance=product)
 
         if form.is_valid():
-            if 'delete' in request.POST:
-                product.delete()
-            elif 'save' in request.POST:
-                form.save()
-            elif 'go-back' in request.POST:
-                pass
-
-        return redirect('products', store_id=store_id)
-    
+            form.save()
+            return redirect('products')
     else:
-        form = ProductForm()
-    
+        form = ProductForm(instance=product)
+
     context = {
-        'form': form
+        'form': form,
     }
 
     return render(request, context=context, template_name=template_name)
 
 
 @login_required
-def order_form(request, user_id, order_id):
+def order_item(request, id):
     template_name = 'form_generic.html'
 
-    user = get_object_or_404(User, id=user_id)
-    order = get_object_or_404(Order, id=order_id, user=user)
+    order = get_object_or_404(Order, id=id)
 
     if request.method == 'POST':
-        form = OrderForm(request.POST)
+        form = OrderForm(request.POST, instance=order)
 
         if form.is_valid():
-            if 'delete' in request.POST:
-                order.delete()
-            elif 'save' in request.POST:
-                form.save()
-            elif 'go-back' in request.POST:
-                pass
-        
-        return redirect('orders', user_id=user_id)
-    
+            form.save()
+            return redirect('stores')
     else:
-        form = OrderForm()
-    
+        form = StoreForm(instance=order)
+
     context = {
-        'form': form
+        'form': form,
     }
 
     return render(request, context=context, template_name=template_name)

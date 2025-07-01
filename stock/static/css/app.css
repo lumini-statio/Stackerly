@@ -2,11 +2,11 @@
     navigation: auto;
 }
 
-::view-transition-old(root) {
+::view-transition-old(#main-block) {
     animation: slide-out-to-left 0.8s forwards;
 }
 
-::view-transition-new(root) {
+::view-transition-new(#main-block) {
     animation: slide-in-from-right 0.5s forwards;
 }
 

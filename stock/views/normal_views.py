@@ -102,10 +102,10 @@ def stores(request):
 
 
 @login_required
-def products(request, store_id):
+def products(request, id):
     template_name = 'list/products.html'
 
-    store = get_object_or_404(Store, id=store_id)
+    store = get_object_or_404(Store, id=id)
     products = Product.objects.filter(related_store=store)
     table = ProductTable(products)
 

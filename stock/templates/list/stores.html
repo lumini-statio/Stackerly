@@ -5,7 +5,9 @@
 {% block content %}
 <div style="view-transition-name: stores;">
     <h2> Stores </h2>
-    <a href="{% url 'store_form' %}" class="btn btn-primary">Create</a>
+    <a href="{% url 'store_form' %}" class="btn btn-primary" style="view-transition-name: form_generic;">
+        <i class="fa fa-plus fa-lg"></i>
+    </a>
     <br>
     {% render_table table %}
 </div>
