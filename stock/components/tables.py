@@ -22,7 +22,7 @@ class UserTable(tables.Table):
     class Meta:
         model = User
         fields = ('username', 'email')
-        attrs = {'class': 'table w-75 mx-auto'}
+        attrs = {'class': 'table mx-auto'}
 
 
 class StoreTable(tables.Table):
@@ -44,7 +44,7 @@ class StoreTable(tables.Table):
     class Meta:
         model = Store
         fields = ('name', 'location', 'capacity')
-        attrs = {'class': 'table w-75 mx-auto'}
+        attrs = {'class': 'table mx-auto'}
 
 
 class ProductTable(tables.Table):
@@ -66,7 +66,7 @@ class ProductTable(tables.Table):
     class Meta:
         model = Product
         fields = ('name', 'price', 'type', 'related_store')
-        attrs = {'class': 'table w-75 mx-auto'}
+        attrs = {'class': 'table mx-auto'}
         
     
 class OrderTable(tables.Table):
@@ -88,5 +88,5 @@ class OrderTable(tables.Table):
     class Meta:
         model = Order
         fields = ('product', 'user', 'date')
-        attrs = {'class': 'table w-75 mx-auto'}
+        attrs = {'class': 'table mx-auto'}
         

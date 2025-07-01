@@ -3,10 +3,32 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 from stock.models import Store, Product, Order
-from stock.forms import ProductForm, OrderForm
+from stock.forms import StoreForm, ProductForm, OrderForm
+
 
 @login_required
-def product_item(request, store_id, product_id):
+def store_form(request):
+    template_name = 'form_generic.html'
+
+    if request.method == 'POST':
+        form = StoreForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('stores')
+    
+    else:
+        form = StoreForm()
+    
+    context = {
+        'form': form
+    }
+
+    return render(request, context=context, template_name=template_name)
+
+
+@login_required
+def product_form(request, store_id, product_id):
     template_name = 'form_generic.html'
 
     store = get_object_or_404(Store, id=store_id)
@@ -18,9 +40,12 @@ def product_item(request, store_id, product_id):
         if form.is_valid():
             if 'delete' in request.POST:
                 product.delete()
-                return redirect('products', store_id=store_id)
+            elif 'save' in request.POST:
+                form.save()
             elif 'go-back' in request.POST:
-                return redirect('products', store_id=store_id)
+                pass
+
+        return redirect('products', store_id=store_id)
     
     else:
         form = ProductForm()
@@ -33,7 +58,7 @@ def product_item(request, store_id, product_id):
 
 
 @login_required
-def order_item(request, user_id, order_id):
+def order_form(request, user_id, order_id):
     template_name = 'form_generic.html'
 
     user = get_object_or_404(User, id=user_id)
@@ -45,9 +70,12 @@ def order_item(request, user_id, order_id):
         if form.is_valid():
             if 'delete' in request.POST:
                 order.delete()
-                return redirect('orders', user_id=user_id)
+            elif 'save' in request.POST:
+                form.save()
             elif 'go-back' in request.POST:
-                return redirect('products', user_id=user_id)
+                pass
+        
+        return redirect('orders', user_id=user_id)
     
     else:
         form = OrderForm()

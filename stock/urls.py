@@ -1,8 +1,6 @@
 from django.urls import path
 from stock.views.normal_views import *
 from stock.views.item_views import *
-from django.conf import settings
-from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -14,10 +12,11 @@ urlpatterns = [
     path('profile/', profile, name='profile'),
 
     path('stores/', stores, name='stores'),
+    path('stores/create/', store_form, name='store_form'),
     path('stores/<int:id>/products/', products, name='products'),
-    path('stores/<int:store_id>/products/<int:product_id>', product_item, name='products'),
+    path('stores/<int:store_id>/products/<int:product_id>', product_form, name='product_form'),
 
     path('users/', users, name='users'),
     path('users/<int:id>/orders/', orders, name='orders'),
-    path('users/<int:user_id>/orders/<int:order_id>/', order_item, name='order_detail'),
+    path('users/<int:user_id>/orders/<int:order_id>/', order_form, name='order_form'),
 ]

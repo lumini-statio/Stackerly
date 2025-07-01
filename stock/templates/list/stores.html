@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load django_tables2 crispy_forms_tags %}
+{% load render_table from django_tables2 %}
+
+{% block content %}
+<div style="view-transition-name: stores;">
+    <h2> Stores </h2>
+    <a href="{% url 'store_form' %}" class="btn btn-primary">Create</a>
+    <br>
+    {% render_table table %}
+</div>
+{% endblock %}
