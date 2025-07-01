@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<form method="POST">
+    {% csrf_token %}
+    {{ form | crispy }}
+    <div class="d-flex justify-content-center align-items-center gap-3">
+        <button type="submit" class="btn btn-primary px-5">Save</button>
+        <a href="{% url 'stores' %}" class="btn btn-warning px-5 mx-1">Cancel</a>
+    </div>
+</form>
+{% endblock %}

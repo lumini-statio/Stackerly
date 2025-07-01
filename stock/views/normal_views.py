@@ -65,7 +65,7 @@ def logout_view(request):
 
 @login_required
 def users(request):
-    template_name = 'users.html'
+    template_name = 'list/users.html'
 
     users = User.objects.all()
     table = UserTable(users)
@@ -89,7 +89,7 @@ def home(request):
 
 @login_required
 def stores(request):
-    template_name = 'stores.html'
+    template_name = 'list/stores.html'
 
     stores = Store.objects.all()
     table = StoreTable(stores)
@@ -103,7 +103,7 @@ def stores(request):
 
 @login_required
 def products(request, store_id):
-    template_name = 'products.html'
+    template_name = 'list/products.html'
 
     store = get_object_or_404(Store, id=store_id)
     products = Product.objects.filter(related_store=store)
@@ -120,7 +120,7 @@ def products(request, store_id):
 
 @login_required
 def orders(request, user_id, order_id):
-    template_name = 'orders.html'
+    template_name = 'list/orders.html'
 
     user = get_object_or_404(User, id=user_id)
     orders = Order.objects.filter(user=user)
