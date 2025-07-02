@@ -85,9 +85,10 @@ Sign up or log in to manage stores, products, and orders.
 
 ## 🧬 Model Overview
 
-- 👤 **User**: `username`, `email`, `password`, `is_superuser`
+- 👤 **User**: `username`, `email`, `password`, `is_superuser`, `is_staff`, `is_active`, `date_joined`
 - 🏬 **Store**: `name`, `location`, `capacity`
-- 📦 **Product**: `name`, `price`, `type`, `model`, `related_store`
+- ⚙️ **ProductState**: `name`
+- 📦 **Product**: `name`, `price`, `type`, `model`, `related_store`, `state`,`last_updated_state`
 - 🧾 **Order**: `product`, `user`, `date`
 
 ---
