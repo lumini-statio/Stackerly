@@ -4,9 +4,16 @@ from datetime import date
 
 
 # Create your models here.
+class Location(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return str(self.name)
+
+
 class Store(models.Model):
     name = models.CharField(max_length=100)
-    location = models.CharField(max_length=255)
+    location = models.ForeignKey(Location, on_delete=models.PROTECT)
     capacity = models.PositiveIntegerField(default=0)
 
     def __str__(self):
@@ -57,14 +64,25 @@ class Order(models.Model):
 
     def __str__(self):
         return f'Order {self.product.name} by {self.user.username} on {self.date.strftime("%Y-%m-%d %H:%M:%S")}'
+    
+
+class Purchase(models.Model):
+    purchased_item = models.CharField(max_length=50)
+    spent = models.DecimalField(max_digits=10, decimal_places=2)
+    date = models.DateTimeField()
+
+    class Meta:
+        ordering = ['-date']
 
 
 class Balance(models.Model):
     current_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     last_updated = models.DateTimeField(auto_now=True)
+    location = models.ForeignKey(Location, on_delete=models.PROTECT)
+
+    def calculate_amount(self) -> float:
+        amount_spent = sum([purchase.spent for purchase in Purchase.objects.all()])
+        return float(amount_spent)
 
     def __str__(self):
         return f'Balance: {self.current_amount} (Last updated: {self.last_updated.strftime("%Y-%m-%d %H:%M:%S")})'
-
-    class Meta:
-        ordering = ['date']
