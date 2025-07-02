@@ -11,6 +11,7 @@ urlpatterns = [
     path('accounts/login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('users/', users, name='users'),
+    path('users/<int:id>', user_item, name='user_item'),
 
     path('home/', home, name='home'),
     path('profile/', profile, name='profile'),
@@ -26,4 +27,6 @@ urlpatterns = [
     path('users/<int:id>/orders/', orders, name='orders'),
     path('users/<int:user_id>/orders/create/', order_form, name='order_form'),
     path('users/<int:user_id>/orders/<int:order_id>/', order_item, name='order_item'),
+
+    path('charts/', charts, name='charts'),
 ]
