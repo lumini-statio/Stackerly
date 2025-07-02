@@ -9,12 +9,25 @@ class Location(models.Model):
 
     def __str__(self):
         return str(self.name)
+    
+
+class BalanceBox(models.Model):
+    current_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    last_updated = models.DateTimeField(auto_now=True)
+    location = models.ForeignKey(Location, on_delete=models.PROTECT, related_name='balances')
+
+    def calculate_amount(self) -> float:
+        amount_spent = sum([purchase.spent for purchase in Purchase.objects.all()])
+        return float(amount_spent)
+
+    def __str__(self):
+        return f'Balance: {self.current_amount} (Last updated: {self.last_updated.strftime("%Y-%m-%d %H:%M:%S")})'
 
 
 class Store(models.Model):
     name = models.CharField(max_length=100)
-    location = models.ForeignKey(Location, on_delete=models.PROTECT)
-    capacity = models.PositiveIntegerField(default=0)
+    balance = models.ForeignKey(BalanceBox, on_delete=models.PROTECT, related_name='stores')
+    location = models.ForeignKey(Location, on_delete=models.PROTECT, related_name='stores')
 
     def __str__(self):
         return f'{self.name} - {self.location}'
@@ -73,16 +86,3 @@ class Purchase(models.Model):
 
     class Meta:
         ordering = ['-date']
-
-
-class Balance(models.Model):
-    current_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    last_updated = models.DateTimeField(auto_now=True)
-    location = models.ForeignKey(Location, on_delete=models.PROTECT)
-
-    def calculate_amount(self) -> float:
-        amount_spent = sum([purchase.spent for purchase in Purchase.objects.all()])
-        return float(amount_spent)
-
-    def __str__(self):
-        return f'Balance: {self.current_amount} (Last updated: {self.last_updated.strftime("%Y-%m-%d %H:%M:%S")})'
