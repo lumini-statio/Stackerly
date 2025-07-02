@@ -1,62 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
-from stock.models import Store, Product, Order
+from stock.models import Store, Product, Order, CO2
 from stock.components.tables import StoreTable, ProductTable, OrderTable, UserTable
 
+import pandas as pd
+import plotly.express as px
+
 # Create your views here.
-def signup(request):
-
-    template_name = 'accounts/signup.html'
-
-    form = UserCreationForm()
-
-    if request.method == 'POST':
-        if request.POST.get('password1') == request.POST.get('password2'):
-            user = User.objects.create_user(
-                username=request.POST['username'],
-                password=request.POST['password1'],
-            )
-            user.save()
-
-            login(request, user)
-            return redirect('home')
-        else:
-            HttpResponse("Passwords do not match")
-
-    context = {
-        'form': form,
-    }
-    
-    return render(request, context=context, template_name=template_name)
-
-
-def login_view(request):
-    template_name = 'accounts/login.html'
-
-    form = AuthenticationForm()
-
-    if request.user.is_authenticated:
-        return redirect('home')
-
-    if request.method == 'POST':
-        username = request.POST["username"]
-        password = request.POST["password"]
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-
-    context = {
-        'form': form
-    }
-
-    return render(request, context=context, template_name=template_name)
-
 @login_required(login_url='login')
 def logout_view(request):
     logout(request)
@@ -78,13 +32,39 @@ def users(request):
 
 
 @login_required
+def profile(request):
+    template_name = 'profile.html'
+
+    user = request.user
+
+    orders = Order.objects.filter(user=user)
+    ord_table = OrderTable(orders)
+    
+    products = [product for order in orders for product in order.product]
+
+    prod_table = ProductTable(products)
+
+    context = {
+        'user': user,
+        'ord_table': ord_table,
+        'prod_table': prod_table
+    }
+
+    return render(request, context=context, template_name=template_name)
+
+
+@login_required
 def home(request):
     template_name = 'home.html'
+    
+    products = Product.objects.all().order_by('-id')
+    table = ProductTable(products)
 
-    if not request.user.is_authenticated:
-        return redirect('login')
+    context = {
+        'table': table
+    }
 
-    return render(request, template_name=template_name)
+    return render(request, context=context, template_name=template_name)
 
 
 @login_required
@@ -150,6 +130,37 @@ def profile(request, user_id):
     context = {
         'user': user,
         'table': table
+    }
+
+    return render(request, context=context, template_name=template_name)
+
+
+@login_required
+def charts(request):
+    template_name = 'charts.html'
+    co2 = CO2.objects.all()
+
+    df = pd.DataFrame({
+        'date': [c.date for c in co2],
+        'average': [c.average for c in co2],
+        'year': [c.year for c in co2]
+    })
+
+    co2_fig = px.line(
+        data_frame=df,
+        x='date',
+        y='average',
+        animation_frame='year',
+        title='CO2 Evolution across time',
+        color_discrete_sequence=['green']
+    )
+    
+    charts = [
+        co2_fig.to_html()
+    ]
+
+    context = {
+        'charts': charts
     }
 
     return render(request, context=context, template_name=template_name)
