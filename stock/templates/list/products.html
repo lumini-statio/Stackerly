@@ -4,7 +4,9 @@
 
 {% block content %}
 <div style="view-transition-name: products;">
-    <h2> Store {{store.name}} </h2>
+    <div class="d-flex justify-content-center mb-5">
+        <h1 style="color: #fff;">Store {{store.name}}</h1>
+    </div>
     <a href="{% url 'product_form' store.id %}" class="btn btn-primary" style="view-transition-name: form_generic;">
         <i class="fa fa-plus fa-lg"></i>
     </a>
