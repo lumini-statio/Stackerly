@@ -4,7 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
-from stock.models import Store, Product, Order, CO2
+from stock.models import Store, Product, Order, Balance
 from stock.components.tables import StoreTable, ProductTable, OrderTable, UserTable
 
 import pandas as pd
@@ -138,12 +138,12 @@ def profile(request, user_id):
 @login_required
 def charts(request):
     template_name = 'charts.html'
-    co2 = CO2.objects.all()
+    bl = Balance.objects.all()
 
     df = pd.DataFrame({
-        'date': [c.date for c in co2],
-        'average': [c.average for c in co2],
-        'year': [c.year for c in co2]
+        'date': [c.date for c in bl],
+        'average': [c.average for c in bl],
+        'year': [c.year for c in bl]
     })
 
     co2_fig = px.line(
@@ -151,8 +151,8 @@ def charts(request):
         x='date',
         y='average',
         animation_frame='year',
-        title='CO2 Evolution across time',
-        color_discrete_sequence=['green']
+        title='Balance Evolution across time',
+        color_discrete_sequence=['black']
     )
     
     charts = [
