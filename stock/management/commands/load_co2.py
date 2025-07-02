@@ -10,7 +10,7 @@ class Command(BaseCommand):
     help = 'Load CSV data from CO2 file'
 
     def handle(self, *args, **kwargs):
-        datafile = settings.BASE_DIR / 'stock' / 'data' / 'co2.csv'
+        datafile = settings.BASE_DIR / 'data' / 'co2.csv'
 
         with open(datafile, 'r') as file:
             reader = csv.DictReader(islice(file, 40, None))
