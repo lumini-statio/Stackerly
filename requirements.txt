@@ -8,3 +8,4 @@ pandas==2.3.0
 numpy==2.3.1
 django-crispy-forms==2.4
 crispy-bootstrap5==2025.6
+django-adminlte-ui==2.1.1
