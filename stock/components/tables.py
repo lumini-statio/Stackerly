@@ -1,6 +1,5 @@
 import django_tables2 as tables
-from stock.models import Order, Product, Store
-from django.contrib.auth.models import User
+from stock.models import Order, Product, Store, CustomUser
 
 
 class UserTable(tables.Table):
@@ -15,7 +14,7 @@ class UserTable(tables.Table):
     )
 
     class Meta:
-        model = User
+        model = CustomUser
         fields = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser')
         attrs = {'class': 'table mx-auto text-light'}
 
@@ -50,7 +49,7 @@ class ProductTable(tables.Table):
 
     edit = tables.TemplateColumn(
         template_code='''
-            <a href="{% url 'product_item' record.id %}" >
+            <a href="{% url 'product_item' store.id record.id %}" >
                 <i class="fa fa-pen fa-sm text-success"></i>
             </a>''',
         orderable=False,
