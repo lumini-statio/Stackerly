@@ -1,9 +1,29 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractBaseUser
 from datetime import date
 
+from stock.managers import CustomUserManager
 
-# Create your models here.
+
+class CustomUser(AbstractBaseUser):
+    username = models.CharField(max_length=20, unique=True)
+    email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    date_joined = models.DateTimeField(auto_now=True)
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
+
+    objects = CustomUserManager()
+
+    def __str__(self):
+        return f'{self.username} - {self.email}'
+
+
 class Location(models.Model):
     name = models.CharField(max_length=255)
 
@@ -36,6 +56,10 @@ class Store(models.Model):
 class ProductState(models.Model):
     name = models.CharField(max_length=50, unique=True)
 
+    def builder():
+        state = ProductState.objects.get_or_create(name='Available')
+        return state
+
     def __str__(self):
         return self.name
     
@@ -46,7 +70,7 @@ class Product(models.Model):
     type = models.CharField(max_length=50)
     model = models.CharField(max_length=50, blank=True, null=True)
     related_store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='products')
-    state = models.ForeignKey(ProductState, on_delete=models.CASCADE)
+    state = models.ForeignKey(ProductState, on_delete=models.PROTECT)
     last_updated_state = models.DateField(auto_now=True)
 
     def can_change_state(self):
@@ -72,7 +96,7 @@ class Product(models.Model):
 
 class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
