@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load django_tables2 crispy_forms_tags %}
+{% load render_table from django_tables2 %}
+
+{% block content %}
+<div class='w-75' style="view-transition-name: profile;">
+    <div class="d-flex justify-content-end gap-2">
+        <a href="{% url 'home' %}" class="btn btn-light" style="view-transition-name: home;">Home</a>
+        <a href="{% url 'logout' %}" class="btn btn-danger ml-3" style="view-transition-name: login-form;">Logout</a>
+    </div>
+    <div class="d-flex justify-content-center align-items-center">
+        <h1 class="my-5 text-light">{{user.username}}'s Profile</h1>
+    </div>
+    
+    
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="w-50">
+            {% render_table ord_table %}
+        </div>
+        <div class="w-50">
+            {% render_table prod_table %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
