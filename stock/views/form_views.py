@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
+from django.contrib import messages
 from django.http import HttpResponse
 
 from stock.models import Store, Product, Order
@@ -21,8 +22,9 @@ def signup(request):
                 password=request.POST['password1'],
             )
             user.save()
-
             login(request, user)
+            messages.success(request, 'Sign up successed')
+
             return redirect('home')
         else:
             HttpResponse("Passwords do not match")
@@ -66,8 +68,9 @@ def store_form(request):
 
         if form.is_valid():
             form.save()
+            messages.success(request, f'Store created successed')
+
             return redirect('stores')
-    
     else:
         form = StoreForm()
     
@@ -91,7 +94,9 @@ def product_form(request, store_id):
             product = form.save(commit=False)
             product.related_store = store
             product.save()
-            return redirect('products', id=store_id)
+            messages.success(request, f'product {product.id} created successed')
+
+            return redirect('product', id=store_id)
     
     else:
         form = ProductForm()
@@ -120,7 +125,8 @@ def order_form(request, user_id, order_id):
                 form.save()
             elif 'go-back' in request.POST:
                 pass
-        
+        messages.success(request, f'Order created successed')
+
         return redirect('orders', user_id=user_id)
     
     else:
