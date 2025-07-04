@@ -4,7 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
-from stock.models import Store, Product, Order, Balance
+from stock.models import Store, Product, Order, BalanceBox, CustomUser
 from stock.components.tables import StoreTable, ProductTable, OrderTable, UserTable
 
 import pandas as pd
@@ -21,7 +21,7 @@ def logout_view(request):
 def users(request):
     template_name = 'list/users.html'
 
-    users = User.objects.all()
+    users = CustomUser.objects.all()
     table = UserTable(users)
 
     context = {
@@ -59,9 +59,11 @@ def home(request):
     
     products = Product.objects.all().order_by('-id')
     table = ProductTable(products)
+    user = request.user
 
     context = {
-        'table': table
+        'table': table,
+        'user': user
     }
 
     return render(request, context=context, template_name=template_name)
@@ -115,21 +117,25 @@ def orders(request, user_id, order_id):
 
 
 @login_required
-def profile(request, user_id):
+def profile(request, id):
     template_name = 'profile.html'
 
     user = request.user
 
-    if user.id == user_id:
+    if user.id == id:
         orders = Order.objects.filter(user=user)
-        table = OrderTable(orders)
+        ord_table = OrderTable(orders)
+        products = [order.product for order in orders]
+        prod_table = ProductTable(products)
     else:
-        table = None
+        ord_table = None
+        prod_table = None
         return HttpResponse("You are not authorized to view this profile.")
     
     context = {
         'user': user,
-        'table': table
+        'ord_table': ord_table,
+        'prod_table': prod_table,
     }
 
     return render(request, context=context, template_name=template_name)
@@ -138,7 +144,7 @@ def profile(request, user_id):
 @login_required
 def charts(request):
     template_name = 'charts.html'
-    bl = Balance.objects.all()
+    bl = BalanceBox.objects.all()
 
     df = pd.DataFrame({
         'date': [c.date for c in bl],
@@ -151,7 +157,7 @@ def charts(request):
         x='date',
         y='average',
         animation_frame='year',
-        title='Balance Evolution across time',
+        title='Balance Box Evolution across time',
         color_discrete_sequence=['black']
     )
     

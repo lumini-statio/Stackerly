@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm
+from django.contrib import messages
 
 from stock.models import Store, Product, Order
 from stock.forms import StoreForm, ProductForm, OrderForm
@@ -9,15 +10,22 @@ from stock.forms import StoreForm, ProductForm, OrderForm
 
 @login_required
 def user_item(request, id):
-    template_name = 'form_generic.html'
+    template_name = 'mod_generic.html'
 
     user = get_object_or_404(User, id=id)
+    email = user.email
 
     if request.method == 'POST':
         form = UserChangeForm(request.POST, instance=user)
 
         if form.is_valid():
-            form.save()
+            if 'save' in request.POST:
+                form.save()
+                messages.success(request, f"User '{user.email}' edited successfully")
+            elif 'delete' in request.POST:
+                user.delete()
+                messages.success(request, f"User {email} deleted successfully")
+
             return redirect('stores')
     else:
         form = UserChangeForm(instance=user)
@@ -31,15 +39,22 @@ def user_item(request, id):
 
 @login_required
 def store_item(request, id):
-    template_name = 'form_generic.html'
+    template_name = 'mod_generic.html'
 
     store = get_object_or_404(Store, id=id)
+    st_name = store.name
 
     if request.method == 'POST':
         form = StoreForm(request.POST, instance=store)
 
         if form.is_valid():
-            form.save()
+            if 'save' in request.POST:
+                form.save()
+                messages.success(request, f"Store '{store.name}' edited successfully")
+            elif 'delete' in request.POST:
+                store.delete()
+                messages.success(request, f"Store {st_name} deleted successfully")
+                
             return redirect('stores')
     else:
         form = StoreForm(instance=store)
@@ -52,17 +67,24 @@ def store_item(request, id):
 
 
 @login_required
-def product_item(request, id):
-    template_name = 'form_generic.html'
+def product_item(request, store_id, id):
+    template_name = 'mod_generic.html'
 
     product = get_object_or_404(Product, id=id)
+    pr_name = product.name
 
     if request.method == 'POST':
         form = ProductForm(request.POST, instance=product)
 
         if form.is_valid():
-            form.save()
-            return redirect('products')
+            if 'save' in request.POST:
+                form.save()
+                messages.success(request, f"Product '{product.name}' edited successfully")
+            elif 'delete' in request.POST:
+                product.delete()
+                messages.success(request, f"Product {pr_name} deleted successfully")
+
+            return redirect('products', id=store_id)
     else:
         form = ProductForm(instance=product)
 
@@ -75,7 +97,7 @@ def product_item(request, id):
 
 @login_required
 def order_item(request, id):
-    template_name = 'form_generic.html'
+    template_name = 'mod_generic.html'
 
     order = get_object_or_404(Order, id=id)
 
@@ -83,7 +105,13 @@ def order_item(request, id):
         form = OrderForm(request.POST, instance=order)
 
         if form.is_valid():
-            form.save()
+            if 'save' in request.POST:
+                form.save()
+                messages.success(request, f"Order {id} edited successfully")
+            elif 'delete' in request.POST:
+                order.delete()
+                messages.success(request, f"Product {id} deleted successfully")
+
             return redirect('stores')
     else:
         form = StoreForm(instance=order)
