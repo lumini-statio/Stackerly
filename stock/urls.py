@@ -14,7 +14,7 @@ urlpatterns = [
     path('users/<int:id>', user_item, name='user_item'),
 
     path('home/', home, name='home'),
-    path('profile/', profile, name='profile'),
+    path('profile/<int:id>/', profile, name='profile'),
 
     path('stores/', stores, name='stores'),
     path('stores/create/', store_form, name='store_form'),
@@ -22,7 +22,7 @@ urlpatterns = [
 
     path('stores/<int:id>/products/', products, name='products'),
     path('stores/<int:store_id>/products/create/', product_form, name='product_form'),
-    path('products/<int:id>/', product_item, name='product_item'),
+    path('stores/<int:store_id>/products/<int:id>/', product_item, name='product_item'),
 
     path('users/<int:id>/orders/', orders, name='orders'),
     path('users/<int:user_id>/orders/create/', order_form, name='order_form'),
