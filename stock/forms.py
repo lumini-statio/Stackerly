@@ -95,4 +95,4 @@ class OrderForm(ModelForm):
 class UserPurchaseForm(ModelForm):
     class Meta:
         model = UserPurchase
-        exclude = ('product')
+        exclude = ('product',)
