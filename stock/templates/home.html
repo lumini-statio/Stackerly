@@ -13,7 +13,7 @@
             <a href="{% url 'profile' user.id %}" class="btn btn-info w-100" style="view-transition-name: profile;">Profile</a>
         </div>
 
-        {% if user.is_superuser %}
+        {% if user.is_staff %}
         <div class="col">
             <a href="{% url 'stores' %}" class="btn btn-warning w-100" style="view-transition-name: stores;">Stores</a>
         </div>
@@ -23,11 +23,14 @@
         <div class="col">
             <a href="{% url 'users' %}" class="btn btn-success w-100" style="view-transition-name: users;">Users</a>
         </div>
+        {% if user.is_superuser %}
         <div class="col">
             <a href="/admin/" class="btn btn-secondary w-100">Admin</a>
         </div>
         {% endif %}
+        {% endif %}
     </div>
 
+    {% render_table table %}
 </div>
 {% endblock %}
