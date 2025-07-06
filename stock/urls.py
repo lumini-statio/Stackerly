@@ -12,9 +12,17 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('users/', users, name='users'),
     path('users/<int:id>', user_item, name='user_item'),
+    path('users/create-new', user_form, name='user_form'),
+
+    path('users/import_excel', import_excel, name='import_excel'),
+    path('users/export_excel', export_excel, name='export_excel'),
+
+    path('users/import_csv', import_csv, name='import_csv'),
+    path('users/export_csv', export_csv, name='export_csv'),
 
     path('home/', home, name='home'),
     path('profile/<int:id>/', profile, name='profile'),
+    path('profile/<int:id>/my-orders', my_orders, name='my-orders'),
 
     path('stores/', stores, name='stores'),
     path('stores/create/', store_form, name='store_form'),
@@ -23,6 +31,7 @@ urlpatterns = [
     path('stores/<int:id>/products/', products, name='products'),
     path('stores/<int:store_id>/products/create/', product_form, name='product_form'),
     path('stores/<int:store_id>/products/<int:id>/', product_item, name='product_item'),
+    path('home/buy-product/<int:id>/', buy_product, name='buy_product'),
 
     path('users/<int:id>/orders/', orders, name='orders'),
     path('users/<int:user_id>/orders/create/', order_form, name='order_form'),
