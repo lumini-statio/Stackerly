@@ -2,10 +2,10 @@ from datetime import datetime
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.http import HttpResponse
+from django.contrib.auth.hashers import make_password
 
 from stock.models import Store, Product, Order, CustomUser
 from stock.forms import StoreForm, ProductForm, OrderForm,\
@@ -47,12 +47,12 @@ def login_view(request):
         return redirect('home')
 
     if request.method == 'POST':
-        username = request.POST["username"]
-        password = request.POST["password"]
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
+        form = CustomAuthenticationForm(request.POST)
+        
+        if form.is_valid():
+            user = form.get_user()
             login(request, user)
-            messages.success(request, 'Login successfuly')
+            messages.success(request, 'Login successfully')
             return redirect('home')
 
     context = {
@@ -168,7 +168,7 @@ def buy_product(request, id):
 def order_form(request, user_id, order_id):
     template_name = 'form_generic.html'
 
-    user = get_object_or_404(User, id=user_id)
+    user = get_object_or_404(CustomUser, id=user_id)
     order = get_object_or_404(Order, id=order_id, user=user)
 
     if request.method == 'POST':
