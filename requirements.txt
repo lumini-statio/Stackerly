@@ -1,3 +1,4 @@
+# Python==3.11.10
 django==4.2
 django-filter==25.1
 django-tables2==2.7.5
@@ -9,3 +10,7 @@ numpy==2.3.1
 django-crispy-forms==2.4
 crispy-bootstrap5==2025.6
 django-adminlte-ui==2.1.1
+openpyxl==3.1.5
+xlsxwriter==3.2.5
+fastexcel==0.14.0
+pyarrow==20.0.0
