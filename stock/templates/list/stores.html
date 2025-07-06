@@ -4,9 +4,26 @@
 
 {% block content %}
 <div style="view-transition-name: stores;" class="w-50">
-    <a href="{% url 'home' %}" class="btn btn-light">
-        <i class="fa-light fa-backward-step"></i>
+    <a href="{% url 'home' %}" class="btn btn-dark mb-5">
+        <i class="fa fa-solid fa-arrow-left text-light"></i>
     </a>
+    <div class="d-flex mt-5">
+        <div class="d-flex flex-column justify-content-start">
+            <form method="POST" enctype="multipart/form-data" action="{% url 'import_stores' %}" class="form-inline">
+                {% csrf_token %}
+                <div class="d-flex flex-column justify-content-start mb-3">
+                    <input type="file" name="file" accept=".xlsx,.xls" class="form-control-file mb-1 text-light" required>
+                    <button type="submit" class="btn btn-success">
+                        Import from Excel
+                    </button>
+                </div>
+            </form>
+        
+            <a href="{% url 'export_stores' %}" class="btn btn-primary">
+                Export to Excel
+            </a>
+        </div>
+    </div>
     <div class="d-flex justify-content-center mb-5">
         <h1 style="color: #fff;">Stores</h1>
     </div>
