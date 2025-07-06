@@ -98,7 +98,7 @@ class Purchase(models.Model):
             ProfitLossRecord.objects.create(
                 date=datetime.now(),
                 amount=self.spent,
-                record_type=ProfitLossRecord.RECORD_TYPE_CHOICES[1],
+                record_type=ProfitLossRecord.RECORD_TYPE_CHOICES[1][0],
                 related_store=self.related_store
             )
     
@@ -190,7 +190,7 @@ class UserPurchase(models.Model):
         ProfitLossRecord.objects.create(
             date=datetime.now(),
             amount=self.product.price * self.quantity,
-            record_type=ProfitLossRecord.RECORD_TYPE_CHOICES[0][1],
+            record_type=ProfitLossRecord.RECORD_TYPE_CHOICES[0][0],
             related_store=self.product.related_store
         )
 
