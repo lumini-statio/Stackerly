@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -5,8 +7,9 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.http import HttpResponse
 
-from stock.models import Store, Product, Order
-from stock.forms import StoreForm, ProductForm, OrderForm, CustomAuthenticationForm, CustomUserCreationForm
+from stock.models import Store, Product, Order, CustomUser
+from stock.forms import StoreForm, ProductForm, OrderForm,\
+                        CustomAuthenticationForm, CustomUserCreationForm, UserPurchaseForm
 
 
 def signup(request):
@@ -16,14 +19,13 @@ def signup(request):
     form = CustomUserCreationForm()
 
     if request.method == 'POST':
-        if request.POST.get('password1') == request.POST.get('password2'):
-            user = User.objects.create_user(
-                username=request.POST['username'],
-                password=request.POST['password1'],
-            )
-            user.save()
+        form = CustomUserCreationForm(request.POST)
+
+        if form.is_valid():
+            user = form.save(commit=False)
+            form.save(commit=True)
             login(request, user)
-            messages.success(request, 'Sign up successed')
+            messages.success(request, 'Sign up successfuly')
 
             return redirect('home')
         else:
@@ -50,8 +52,29 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            messages.success(request, 'Login successfuly')
             return redirect('home')
 
+    context = {
+        'form': form
+    }
+
+    return render(request, context=context, template_name=template_name)
+
+
+def user_form(request):
+    template_name = 'form_generic.html'
+
+    form = CustomUserCreationForm()
+
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'User created successfuly')
+            return redirect('users')
+    
     context = {
         'form': form
     }
@@ -108,6 +131,39 @@ def product_form(request, store_id):
     return render(request, context=context, template_name=template_name)
 
 
+def buy_product(request, id):
+    template_name = 'user-purchase.html'
+
+    product = get_object_or_404(Product, id=id)
+
+    form = UserPurchaseForm()
+
+    if request.method == 'POST':
+        form = UserPurchaseForm(request.POST)
+
+        if form.is_valid():
+            user_purchase = form.save(commit=False)
+            user_purchase.product = product
+            user_purchase.save()
+
+            bb = product.related_store.balance_box
+            bb.current_amount += product.price * form.quantity
+            bb.save()
+
+            Order.objects.create(
+                user=request.user,
+                date=datetime.now()
+            )
+            messages.success(request, 'buy registered successfuly')
+            return redirect('home')
+    
+    context = {
+        'form': form
+    }
+
+    return render(request, context=context, template_name=template_name)
+
+
 @login_required
 def order_form(request, user_id, order_id):
     template_name = 'form_generic.html'
@@ -124,8 +180,8 @@ def order_form(request, user_id, order_id):
             elif 'save' in request.POST:
                 form.save()
             elif 'go-back' in request.POST:
-                pass
-        messages.success(request, f'Order created successed')
+                return
+        messages.success(request, f'Order created successfuly')
 
         return redirect('orders', user_id=user_id)
     
