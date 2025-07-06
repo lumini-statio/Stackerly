@@ -3,6 +3,7 @@ from django.views.generic.base import RedirectView
 from stock.views.item_views import *
 from stock.views.normal_views import *
 from stock.views.form_views import *
+from stock.views.import_export_views import *
 
 
 urlpatterns = [
@@ -14,17 +15,18 @@ urlpatterns = [
     path('users/<int:id>', user_item, name='user_item'),
     path('users/create-new', user_form, name='user_form'),
 
-    path('users/import_excel', import_excel, name='import_excel'),
-    path('users/export_excel', export_excel, name='export_excel'),
-
-    path('users/import_csv', import_csv, name='import_csv'),
-    path('users/export_csv', export_csv, name='export_csv'),
+    path('users/import/', import_data, name='import_users'),
+    path('users/export/', export_data, name='export_users'),
 
     path('home/', home, name='home'),
     path('profile/<int:id>/', profile, name='profile'),
     path('profile/<int:id>/my-orders', my_orders, name='my-orders'),
 
     path('stores/', stores, name='stores'),
+
+    path('stores/import/', import_data, name='import_stores'),
+    path('stores/export/', export_data, name='export_stores'),
+
     path('stores/create/', store_form, name='store_form'),
     path('stores/<int:id>/', store_item, name='store_item'),
 
