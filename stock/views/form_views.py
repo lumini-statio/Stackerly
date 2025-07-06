@@ -147,7 +147,7 @@ def buy_product(request, id):
             user_purchase.save()
 
             bb = product.related_store.balance_box
-            bb.current_amount += product.price * form.quantity
+            bb.current_amount += product.price * int(request.POST['quantity'])
             bb.save()
 
             Order.objects.create(
