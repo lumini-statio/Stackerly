@@ -155,7 +155,7 @@ class Product(models.Model):
         if is_new:
             Purchase.objects.create(
                 purchased_item=self.name,
-                spent=self.price,
+                spent=self.price*self.quantity,
                 date=datetime.now(),
                 related_store=self.related_store
             )
