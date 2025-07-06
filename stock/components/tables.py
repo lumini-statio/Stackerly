@@ -6,11 +6,13 @@ class UserTable(tables.Table):
 
     edit = tables.TemplateColumn(
         template_code='''
+            {% if request.user.is_superuser %}
             <a href="{% url 'user_item' record.id %}" >
                 <i class="fa fa-pen fa-sm text-success"></i>
-            </a>''',
+            </a>
+            {% endif %}''',
         orderable=False,
-        verbose_name='Actions',
+        verbose_name='Actions'
     )
 
     class Meta:
@@ -32,9 +34,11 @@ class StoreTable(tables.Table):
 
     edit = tables.TemplateColumn(
         template_code='''
+            {% if request.user.is_superuser %}
             <a href="{% url 'store_item' record.id %}" >
                 <i class="fa fa-pen fa-sm text-success"></i>
-            </a>''',
+            </a>
+            {% endif %}''',
         orderable=False,
         verbose_name='Actions'
     )
@@ -48,10 +52,12 @@ class StoreTable(tables.Table):
 class ProductTable(tables.Table):
 
     edit = tables.TemplateColumn(
-        template_code='''
+        template_code='''   
+            {% if request.user.is_superuser %}
             <a href="{% url 'product_item' store.id record.id %}" >
                 <i class="fa fa-pen fa-sm text-success"></i>
-            </a>''',
+            </a>
+            {% endif %}''',
         orderable=False,
         verbose_name='Actions'
     )
@@ -60,7 +66,22 @@ class ProductTable(tables.Table):
         model = Product
         fields = ('name', 'price', 'type', 'related_store')
         attrs = {'class': 'table mx-auto text-light'}
-        
+
+
+class AllProductsTable(tables.Table):
+    buy = tables.TemplateColumn(
+        template_code='''
+            <a href="{% url 'buy_product' record.id %}" style="view-transition-name: buy-product;">
+                <i class="fa fa-plus fa-sm text-success"></i>
+            </a>''',
+        orderable=False,
+        verbose_name='Actions'
+    )
+
+    class Meta:
+        model = Product
+        fields = ('name', 'price', 'type', 'quantity', 'state', 'related_store')
+        attrs = {'class': 'table mx-auto text-light'}
     
 class OrderTable(tables.Table):
 
@@ -73,7 +94,9 @@ class OrderTable(tables.Table):
 
     edit = tables.TemplateColumn(
         template_code='''
-            <a class="link" href="{% url 'Personas' %}" class="btn btn-primary btn-sm">Edit</a>''',
+            {% if request.user.is_superuser %}
+            <a class="link" href="{% url 'Personas' %}" class="btn btn-primary btn-sm">Edit</a>
+            {% endif %}''',
         orderable=False,
         verbose_name=''
     )
