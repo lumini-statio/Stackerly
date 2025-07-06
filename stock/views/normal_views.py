@@ -4,11 +4,12 @@ from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
-from stock.models import Store, Product, Order, BalanceBox, CustomUser
-from stock.components.tables import StoreTable, ProductTable, OrderTable, UserTable
+from stock.models import Store, Product, Order, CustomUser, ProfitLossRecord
+from stock.components.tables import StoreTable, ProductTable, OrderTable, UserTable, AllProductsTable
 
 import pandas as pd
-import plotly.express as px
+import plotly.graph_objs as go
+from plotly.offline import plot
 
 # Create your views here.
 @login_required(login_url='login')
@@ -58,7 +59,7 @@ def home(request):
     template_name = 'home.html'
     
     products = Product.objects.all().order_by('-id')
-    table = ProductTable(products)
+    table = AllProductsTable(products)
     user = request.user
 
     context = {
@@ -97,7 +98,6 @@ def products(request, id):
     }
 
     return render(request, context=context, template_name=template_name)
-
 
 
 @login_required
@@ -143,30 +143,50 @@ def profile(request, id):
 
 @login_required
 def charts(request):
-    template_name = 'charts.html'
-    bl = BalanceBox.objects.all()
+    records = ProfitLossRecord.objects.all().values('date', 'amount', 'record_type')
 
-    df = pd.DataFrame({
-        'date': [c.date for c in bl],
-        'average': [c.average for c in bl],
-        'year': [c.year for c in bl]
-    })
+    if not records:
+        return render(request, 'charts.html', {'plot_div': """
+                                                <div class='w-100 d-flex justify-content-center'>
+                                                    <p class='text-light'>No hay datos suficientes</p>
+                                                </div>
+                                               """})
 
-    co2_fig = px.line(
-        data_frame=df,
-        x='date',
-        y='average',
-        animation_frame='year',
-        title='Balance Box Evolution across time',
-        color_discrete_sequence=['black']
-    )
-    
-    charts = [
-        co2_fig.to_html()
-    ]
+    df = pd.DataFrame.from_records(records)
+    df['date'] = pd.to_datetime(df['date'])
+
+    grouped = df.groupby(['date', 'record_type']).sum().reset_index()
+    pivot_df = grouped.pivot(index='date', columns='record_type', values='amount').fillna(0)
+
+    income_values = pivot_df['INCOME'] if 'INCOME' in pivot_df.columns else pd.Series([0] * len(pivot_df), index=pivot_df.index)
+    expense_values = pivot_df['EXPENSE'] if 'EXPENSE' in pivot_df.columns else pd.Series([0] * len(pivot_df), index=pivot_df.index)
+
+    trace_income = go.Scatter(x=pivot_df.index, y=income_values, mode='lines+markers', name='Incomes', line=dict(color='green'))
+    trace_expense = go.Scatter(x=pivot_df.index, y=expense_values, mode='lines+markers', name='Expenses', line=dict(color='red'))
+
+    layout = go.Layout(title='Ingresos y Egresos por Día',
+                       xaxis=dict(title='Date'),
+                       yaxis=dict(title='Amount'),
+                       template='plotly_dark')
+
+    fig = go.Figure(data=[trace_income, trace_expense], layout=layout)
+
+    plot_div = plot(fig, output_type='div', include_plotlyjs=True)
+
+    return render(request, 'charts.html', {'plot_div': plot_div})
+
+
+
+def my_orders(request, id):
+    template_name = 'list/my-orders.html'
+
+    user = get_object_or_404(CustomUser, id=id)
+    orders = Order.objects.filter(user=user)
+    table = OrderTable(orders)
 
     context = {
-        'charts': charts
+        'table': table,
+        'user': user
     }
 
     return render(request, context=context, template_name=template_name)

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib import messages
 
-from stock.models import Store, Product, Order
+from stock.models import Store, Product, Order, CustomUser
 from stock.forms import StoreForm, ProductForm, OrderForm
 
 
@@ -12,7 +12,7 @@ from stock.forms import StoreForm, ProductForm, OrderForm
 def user_item(request, id):
     template_name = 'mod_generic.html'
 
-    user = get_object_or_404(User, id=id)
+    user = get_object_or_404(CustomUser, id=id)
     email = user.email
 
     if request.method == 'POST':
