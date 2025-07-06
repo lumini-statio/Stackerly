@@ -119,7 +119,7 @@ def product_form(request, store_id):
             product.save()
             messages.success(request, f'product {product.id} created successed')
 
-            return redirect('product', id=store_id)
+            return redirect('products', id=store_id)
     
     else:
         form = ProductForm()
