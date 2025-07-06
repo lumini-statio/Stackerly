@@ -29,7 +29,6 @@ urlpatterns = [
 
     path('stores/create/', store_form, name='store_form'),
     path('stores/<int:id>/', store_item, name='store_item'),
-
     path('stores/<int:id>/products/', products, name='products'),
     path('stores/<int:store_id>/products/create/', product_form, name='product_form'),
     path('stores/<int:store_id>/products/<int:id>/', product_item, name='product_item'),
