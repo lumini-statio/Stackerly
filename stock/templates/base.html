@@ -19,9 +19,9 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Stock Management</title>
 </head>
-<body class="bg-dark" style="height: 100vh;">
+<body style="height: 100vh; background-color: #111111;">
     <div class="d-flex justify-content-center align-items-center w-100 wt-1">
         {% if messages %}
             {% for message in messages %}
@@ -32,7 +32,7 @@
         {% endif %}
     </div>
 
-    <main class="d-flex flex-column align-items-center gap-2 p-5 h-100" id="main-block">
+    <main class="d-flex flex-column justify-content-center align-items-center gap-2 p-5 h-100" id="main-block">
             {% block content %}
             {% endblock %}
     </main>
