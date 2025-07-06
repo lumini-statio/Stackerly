@@ -9,6 +9,9 @@ admin.site.register(ProductState)
 admin.site.register(Product)
 admin.site.register(Order)
 admin.site.register(Purchase)
+admin.site.register(ProfitLossRecord)
+admin.site.register(UserPurchase)
+admin.site.register(CustomUser)
 
 admin.site.site_title = "Admin Site"
 admin.site.site_header = "Stock Management | Admin"
