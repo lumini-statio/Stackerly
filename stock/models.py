@@ -179,13 +179,20 @@ class UserPurchase(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        modify balance box amount and product state and quantity. 
-        then register profit to charts
+        Modify the balance box, quantity ,product state, register a balance.
         """
+        if self.product.quantity < self.quantity:
+            raise ValueError("No hay suficiente stock disponible.")
+        self.product.quantity -= self.quantity
 
-        self.product.state = ProductState.objects.get_or_create(name='Not Available')[0]
-        self.if_can_subtract_then_do_it(self.product.quantity)
+        if self.product.quantity == 0:
+            self.product.state = ProductState.objects.get_or_create(name='Not Available')[0]
+
         self.product.save()
+
+        bb = self.product.related_store.balance_box
+        bb.current_amount += self.product.price * self.quantity
+        bb.save()
 
         ProfitLossRecord.objects.create(
             date=datetime.now(),
