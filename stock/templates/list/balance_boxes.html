@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load django_tables2 crispy_forms_tags %}
+{% load render_table from django_tables2 %}
+
+{% block content %}
+<div style="view-transition-name: boxes;" class="w-50">
+    <a href="{% url 'home' %}" class="btn btn-dark mb-5">
+        <i class="fa fa-solid fa-arrow-left text-light"></i>
+    </a>
+
+    <div class="d-flex justify-content-center mb-5">
+        <h1 style="color: #fff;">Balance Boxes</h1>
+    </div>
+
+    {% render_table table %}
+</div>
+{% endblock %}

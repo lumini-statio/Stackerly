@@ -4,16 +4,22 @@
 
 {% block content %}
 <div style="view-transition-name: home;" class="w-50">
+    <div class="w-100 d-flex justify-content-end">
+        <a href="{% url 'logout' %}" class="btn btn-danger ml-3" style="view-transition-name: login-form;">Logout</a>
+    </div>
     <div class="d-flex justify-content-center mb-5">
         <h1 style="color: #fff;">Home</h1>
     </div>
 
     <div class="row mb-3 text-center">
         <div class="col">
-            <a href="{% url 'profile' user.id %}" class="btn btn-info w-100" style="view-transition-name: profile;">Profile</a>
+            <a href="{% url 'orders' %}" class="btn btn-info w-100" style="view-transition-name: profile;">Orders</a>
         </div>
 
         {% if user.is_staff %}
+        <div class="col">
+            <a href="{% url 'boxes' %}" class="btn btn-primary w-100" style="view-transition-name: boxes;">Balance Boxes</a>
+        </div>
         <div class="col">
             <a href="{% url 'stores' %}" class="btn btn-warning w-100" style="view-transition-name: stores;">Stores</a>
         </div>
@@ -30,7 +36,19 @@
         {% endif %}
         {% endif %}
     </div>
+    <div class="w-100" style="background-color: #fff; height: 1px;"></div>
+    <br>
+    {% if products %}
+    <div class="d-flex justify-content-center mb-5">
+        <h1 style="color: #fff; margin-bottom: 0;">All Products</h1>
+    </div>
 
     {% render_table table %}
+    
+    {% else %}
+    <div class="d-flex justify-content-center mb-5">
+        <h1 style="color: #fff; margin-bottom: 0;">No products registered Yet</h1>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

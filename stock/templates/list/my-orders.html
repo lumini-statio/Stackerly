@@ -5,12 +5,18 @@
 
 {% block content %}
 <div class="w-75 d-flex flex-column align-items-center" style="view-transition-name: my-orders;">
-    <div class="d-flex justify-content-end gap-2 w-100">
-        <a href="{% url 'home' %}" class="btn btn-light ml-3" style="view-transition-name: home;">Home</a>
-        <a href="{% url 'logout' %}" class="btn btn-danger ml-3" style="view-transition-name: login-form;">Logout</a>
+    <div class="d-flex w-100">
+        <div class="d-flex justify-content-start w-50">
+            <a href="{% url 'home' %}" class="btn btn-light" style="view-transition-name: home;">
+                <i class="fa fa-solid fa-arrow-left"></i>
+            </a>
+        </div>
+        <div class="d-flex justify-content-end w-50">
+            <a href="{% url 'logout' %}" class="btn btn-danger" style="view-transition-name: login-form;">Logout</a>
+        </div>
     </div>
     <div class="d-flex justify-content-center align-items-center">
-        <h1 class="my-5 text-light">{{ user.username }}'s Orders</h1>
+        <h1 class="my-5 text-light">Orders</h1>
     </div>
     <div class="w-100">
         {% render_table table %}
