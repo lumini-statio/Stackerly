@@ -1,5 +1,5 @@
 import django_tables2 as tables
-from stock.models import Order, Product, Store, CustomUser
+from stock.models import Order, Product, Store, CustomUser, BalanceBox
 
 
 class UserTable(tables.Table):
@@ -18,6 +18,13 @@ class UserTable(tables.Table):
     class Meta:
         model = CustomUser
         fields = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser')
+        attrs = {'class': 'table mx-auto text-light'}
+
+
+class BalanceBoxesTable(tables.Table):
+    class Meta:
+        model = BalanceBox
+        fields = ('current_amount', 'last_updated', 'location')
         attrs = {'class': 'table mx-auto text-light'}
 
 
@@ -71,11 +78,16 @@ class ProductTable(tables.Table):
 class AllProductsTable(tables.Table):
     buy = tables.TemplateColumn(
         template_code='''
-            <a href="{% url 'buy_product' record.id %}" style="view-transition-name: buy-product;">
-                <i class="fa fa-plus fa-sm text-success"></i>
-            </a>''',
+            {% if record.state.name == "Not Available" %}
+                <span class="text-danger">-----</span>
+            {% else %}
+                <a href="{% url 'buy_product' record.id %}" style="view-transition-name: buy-product;">
+                    <i class="fa fa-plus fa-sm text-success"></i>
+                </a>
+            {% endif %}
+            ''',
         orderable=False,
-        verbose_name='Actions'
+        verbose_name='Buy'
     )
 
     class Meta:
@@ -84,25 +96,8 @@ class AllProductsTable(tables.Table):
         attrs = {'class': 'table mx-auto text-light'}
     
 class OrderTable(tables.Table):
-
-    create = tables.TemplateColumn(
-        template_code='''
-            <a class="link" href="{% url 'form_Personas' %}" class="btn btn-success btn-sm">Create</a>''',
-        orderable=False,
-        verbose_name='Acciones'
-    )
-
-    edit = tables.TemplateColumn(
-        template_code='''
-            {% if request.user.is_superuser %}
-            <a class="link" href="{% url 'Personas' %}" class="btn btn-primary btn-sm">Edit</a>
-            {% endif %}''',
-        orderable=False,
-        verbose_name=''
-    )
-
     class Meta:
         model = Order
-        fields = ('product', 'user', 'date')
+        fields = ('user', 'date')
         attrs = {'class': 'table mx-auto text-light'}
         
