@@ -140,15 +140,13 @@ def buy_product(request, id):
 
     if request.method == 'POST':
         form = UserPurchaseForm(request.POST)
-
         if form.is_valid():
             user_purchase = form.save(commit=False)
             user_purchase.product = product
-            user_purchase.save()
 
-            bb = product.related_store.balance_box
-            bb.current_amount += product.price * int(request.POST['quantity'])
-            bb.save()
+            buyer_user = CustomUser.objects.get(id=int(request.POST['user']))
+            user_purchase.user = buyer_user
+            user_purchase.save()
 
             Order.objects.create(
                 user=request.user,

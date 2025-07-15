@@ -4,8 +4,19 @@ from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 
-from stock.models import Store, Product, Order, CustomUser, ProfitLossRecord
-from stock.components.tables import StoreTable, ProductTable, OrderTable, UserTable, AllProductsTable
+from stock.models import (Store,
+                          Product,
+                          Order,
+                          CustomUser,
+                          ProfitLossRecord,
+                          BalanceBox,
+                          UserPurchase)
+from stock.components.tables import (BalanceBoxesTable,
+                                     StoreTable,
+                                     ProductTable,
+                                     OrderTable,
+                                     UserTable,
+                                     AllProductsTable)
 
 import pandas as pd
 import plotly.graph_objs as go
@@ -64,7 +75,22 @@ def home(request):
 
     context = {
         'table': table,
-        'user': user
+        'user': user,
+        'products': products
+    }
+
+    return render(request, context=context, template_name=template_name)
+
+
+@login_required
+def balance_boxes(request):
+    template_name = 'list/balance_boxes.html'
+
+    boxes = BalanceBox.objects.all().order_by('-id')
+    table = BalanceBoxesTable(boxes)
+
+    context = {
+        'table': table
     }
 
     return render(request, context=context, template_name=template_name)
@@ -125,7 +151,9 @@ def profile(request, id):
     if user.id == id:
         orders = Order.objects.filter(user=user)
         ord_table = OrderTable(orders)
-        products = [order.product for order in orders]
+
+        user_purchases = UserPurchase.objects.filter(user=user)
+        products = [purchase.product for purchase in user_purchases]
         prod_table = ProductTable(products)
     else:
         ord_table = None
@@ -164,7 +192,7 @@ def charts(request):
     trace_income = go.Scatter(x=pivot_df.index, y=income_values, mode='lines+markers', name='Incomes', line=dict(color='green'))
     trace_expense = go.Scatter(x=pivot_df.index, y=expense_values, mode='lines+markers', name='Expenses', line=dict(color='red'))
 
-    layout = go.Layout(title='Ingresos y Egresos por Día',
+    layout = go.Layout(title='Income and Expenses per Day',
                        xaxis=dict(title='Date'),
                        yaxis=dict(title='Amount'),
                        template='plotly_dark')
@@ -177,16 +205,14 @@ def charts(request):
 
 
 
-def my_orders(request, id):
-    template_name = 'list/my-orders.html'
+def orders(request):
+    template_name = 'list/orders.html'
 
-    user = get_object_or_404(CustomUser, id=id)
-    orders = Order.objects.filter(user=user)
+    orders = Order.objects.all()
     table = OrderTable(orders)
 
     context = {
         'table': table,
-        'user': user
     }
 
     return render(request, context=context, template_name=template_name)
