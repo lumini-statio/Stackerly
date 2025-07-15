@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: stackerly
+    runtime: python
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
+      python manage.py migrate --noinput
+    startCommand: gunicorn app.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: app.settings
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      # Agrega aquí tus variables de entorno sensibles, como SECRET_KEY, DEBUG, DATABASE_URL, etc.
+    healthCheckPath: /
