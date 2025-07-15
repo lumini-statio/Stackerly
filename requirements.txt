@@ -5,6 +5,7 @@ django-tables2==2.7.5
 django-extensions==4.1
 django-adminlte3==0.1.6
 django-crispy-forms==2.4
+dj-database-url==3.0.1
 plotly==6.2.0
 polars==1.31.0
 pandas==2.3.0
