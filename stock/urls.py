@@ -20,7 +20,9 @@ urlpatterns = [
 
     path('home/', home, name='home'),
     path('profile/<int:id>/', profile, name='profile'),
-    path('profile/<int:id>/my-orders', my_orders, name='my-orders'),
+    path('orders', orders, name='orders'),
+
+    path('boxes/', balance_boxes, name='boxes'),
 
     path('stores/', stores, name='stores'),
 
