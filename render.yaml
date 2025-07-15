@@ -7,11 +7,12 @@ services:
       pip install -r requirements.txt
       python manage.py collectstatic --noinput
       python manage.py migrate --noinput
-    startCommand: gunicorn app.wsgi:application --bind 0.0.0.0:$PORT
+    startCommand: gunicorn app.wsgi:application --bind 0.0.0.0:8000
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: app.settings
       - key: PYTHONUNBUFFERED
         value: "1"
-      # Agrega aquí tus variables de entorno sensibles, como SECRET_KEY, DEBUG, DATABASE_URL, etc.
+      - key: DATABASE_URL
+        value: postgresql://postgres:Behelit1566#@db.laaulyemyxnublfsnemd.supabase.co:5432/postgres
     healthCheckPath: /
