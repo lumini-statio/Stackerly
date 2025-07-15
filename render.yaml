@@ -14,5 +14,5 @@ services:
       - key: PYTHONUNBUFFERED
         value: "1"
       - key: DATABASE_URL
-        value: postgresql://postgres:Behelit1566#@db.laaulyemyxnublfsnemd.supabase.co:5432/postgres
+        value: postgresql://postgres:Behelit1566%23@db.laaulyemyxnublfsnemd.supabase.co:5432/postgres
     healthCheckPath: /
