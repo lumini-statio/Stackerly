@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '<REMOVED>'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '.onrender.com',
@@ -102,7 +102,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        os.environ.get('DATABASE_URL')
+        default=os.environ.get('DATABASE_URL')
     )
 }
 
