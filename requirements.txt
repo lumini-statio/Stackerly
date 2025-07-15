@@ -16,3 +16,4 @@ xlsxwriter==3.2.5
 fastexcel==0.14.0
 pyarrow==20.0.0
 psycopg2-binary==2.9.10
+whitenoise==6.9.0
