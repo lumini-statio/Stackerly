@@ -27,12 +27,7 @@ SECRET_KEY = '<REMOVED>'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'https://stackerly.onrender.com',
-    'https://*.onrender.com',
-    '127.0.0.1',
-    'localhost'
-]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
