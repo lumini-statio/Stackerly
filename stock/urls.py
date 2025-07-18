@@ -11,10 +11,13 @@ from stock.views.import_export_views import *
 
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='home', permanent=True)),
+    path('', RedirectView.as_view(url='/home/', permanent=True)),
+    path('home/', home, name='home'),
+
     path('signup/', signup, name='signup'),
     path('accounts/login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
+
     path('users/', users, name='users'),
     path('users/<int:id>', user_item, name='user_item'),
     path('users/create-new', user_form, name='user_form'),
@@ -22,7 +25,6 @@ urlpatterns = [
     path('users/import/', import_data, name='import_users'),
     path('users/export/', export_data, name='export_users'),
 
-    path('home/', home, name='home'),
     path('profile/<int:id>/', profile, name='profile'),
     path('orders', orders, name='orders'),
 
