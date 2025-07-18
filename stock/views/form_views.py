@@ -6,6 +6,10 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
 
 from stock.models import Store, Product, Order, CustomUser
 from stock.forms import StoreForm, ProductForm, OrderForm,\
@@ -82,26 +86,11 @@ def user_form(request):
     return render(request, context=context, template_name=template_name)
 
 
-@login_required
-def store_form(request):
+class StoreCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = 'form_generic.html'
-
-    if request.method == 'POST':
-        form = StoreForm(request.POST)
-
-        if form.is_valid():
-            form.save()
-            messages.success(request, f'Store created successed')
-
-            return redirect('stores')
-    else:
-        form = StoreForm()
-    
-    context = {
-        'form': form
-    }
-
-    return render(request, context=context, template_name=template_name)
+    form_class = StoreForm
+    success_url = reverse_lazy('stores')
+    success_message = "Store created successfully"
 
 
 @login_required
