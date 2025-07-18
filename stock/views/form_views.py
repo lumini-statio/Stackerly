@@ -1,4 +1,5 @@
 from datetime import datetime
+import logging
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -16,6 +17,9 @@ from stock.forms import StoreForm, ProductForm, OrderForm,\
                         CustomAuthenticationForm, CustomUserCreationForm, UserPurchaseForm
 
 
+logger = logging.getLogger(__name__)
+
+
 def signup(request):
 
     template_name = 'accounts/signup.html'
@@ -24,15 +28,18 @@ def signup(request):
 
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
+        logger.info(f"Signup attempt with data: {request.POST}")
 
         if form.is_valid():
             user = form.save(commit=False)
             form.save(commit=True)
             login(request, user)
             messages.success(request, 'Sign up successfuly')
+            logger.info(f"New user created: {user.username}")
 
             return redirect('home')
         else:
+            logger.error(f"Error during signup: {str(e)}")
             HttpResponse("Passwords do not match")
 
     context = {
@@ -48,16 +55,27 @@ def login_view(request):
     form = CustomAuthenticationForm()
 
     if request.user.is_authenticated:
+        logger.info(f"User {request.user.email} already authenticated, redirecting")
         return redirect('home')
 
     if request.method == 'POST':
         form = CustomAuthenticationForm(request.POST)
+        logger.info(f"Login attempt with data: {request.POST}")
         
         if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            messages.success(request, 'Login successfully')
-            return redirect('home')
+            try:
+                user = form.get_user()
+                login(request, user)
+                messages.success(request, 'Login successfully')
+                logger.info(f"User {user.email} logged in successfully")
+
+                return redirect('home')
+            except Exception as e:
+                logger.error(f"Login error: {str(e)}")
+                messages.error(request, 'Login error')
+        else:
+            logger.warning(f"Failed login attempt: {form.errors}")
+            messages.error(request, 'Invalid credentials')
 
     context = {
         'form': form
