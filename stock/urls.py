@@ -1,9 +1,13 @@
 from django.urls import path
 from django.views.generic.base import RedirectView
+from django.conf import settings
+from django.conf.urls.static import static
+
 from stock.views.item_views import *
 from stock.views.normal_views import *
 from stock.views.form_views import *
 from stock.views.import_export_views import *
+
 
 
 urlpatterns = [
@@ -29,7 +33,7 @@ urlpatterns = [
     path('stores/import/', import_data, name='import_stores'),
     path('stores/export/', export_data, name='export_stores'),
 
-    path('stores/create/', store_form, name='store_form'),
+    path('stores/create/', StoreCreateView.as_view(), name='store_form'),
     path('stores/<int:id>/', store_item, name='store_item'),
     path('stores/<int:id>/products/', products, name='products'),
     path('stores/<int:store_id>/products/create/', product_form, name='product_form'),
@@ -42,3 +46,7 @@ urlpatterns = [
 
     path('charts/', charts, name='charts'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
