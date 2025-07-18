@@ -28,7 +28,8 @@ SECRET_KEY = '<REMOVED>'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'stackerly.onrender.com',
+    'https://stackerly.onrender.com',
+    'https://*.onrender.com',
     '127.0.0.1',
     'localhost'
 ]
