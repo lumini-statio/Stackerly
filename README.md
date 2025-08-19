@@ -24,6 +24,7 @@ stackerly/
 │   ├── asgi.py
 │   ├── settings.py
 │   ├── urls.py
+|   └── middlewares.py
 │   └── wsgi.py
 ├── stock/
 │   ├── components/
