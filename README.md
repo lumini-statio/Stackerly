@@ -10,8 +10,8 @@ Stock and Order Management web application built with Django
 - **Store management**
 - **Product management per store**
 - **Order management per user**
-- **Interactive tables** using `django-tables2`
-- **Styled forms** with `django-crispy-forms` + Bootstrap 5
+- **Interactive tables**
+- **Styled forms**
 
 ---
 
