@@ -15,7 +15,7 @@ Stock and Order Management web application built with Django
 
 ---
 
-## 🧱 Project Structure
+## 🏠​ Project Structure
 
 ```
 stackerly/
