@@ -18,10 +18,33 @@ Stock and Order Management web application built with Django
 ## 🧱 Project Structure
 
 ```
-app/        → Main Django config (settings, urls, wsgi, asgi)
-stock/      → Main logic (models, views, forms, templates, components)
-static/     → Static assets (CSS, JS, Bootstrap)
-templates/  → HTML templates
+stackerly/
+├── app/
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── stock/
+│   ├── components/
+│   ├── management/
+│   ├── migrations/
+│   ├── static
+│   │   ├── css/
+│   │   ├── js/
+│   │   └── webfonts/
+│   ├── templates/
+│   ├── views/
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── managers.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── utils.py
+└── manage.py
 ```
 
 ---
@@ -31,7 +54,7 @@ templates/  → HTML templates
 1. **Clone the repository**
     ```sh
     git clone <repo-url>
-    cd stock_app
+    cd Stackerly
     ```
 
 2. **Create and activate a virtual environment**
