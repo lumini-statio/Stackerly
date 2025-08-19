@@ -87,7 +87,8 @@ stackerly/
 
 ## 🧪 Usage
 
-Open your browser at --> [stackerly.onrender.com](https://stackerly.onrender.com/)
+Open your browser at --> [localhost:8000](http://localhost:8000)
+Or go to the main web --> [stackerly.onrender.com](https://stackerly.onrender.com/)
 
 Sign up or log in to manage stores, products, and orders.
 
