@@ -66,7 +66,7 @@ templates/  → HTML templates
 
 ## 🧪 Usage
 
-Open your browser at 👉 [http://localhost:8000/](http://localhost:8000/)
+Open your browser at 👉 [stackerly.onrender.com](https://stackerly.onrender.com/)
 
 Sign up or log in to manage stores, products, and orders.
 
