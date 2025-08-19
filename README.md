@@ -104,7 +104,3 @@ Sign up or log in to manage stores, products, and orders.
 - **Styles**: Located in `stock/static/css/` (uses Bootstrap 4/5)
 - **Tables**: Customizable in `stock/components/tables.py`
 - **Forms**: Built with crispy-forms, editable in `stock/forms.py`
-
----
-
-Ready to manage your stock like a pro? Let’s go! 🚀
