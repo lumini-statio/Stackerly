@@ -28,8 +28,8 @@ SECRET_KEY = 'django-insecure-urj-(2(-3u-8a-&09_#am8$-66p_t&7&ic73x@4l3+1+*11jlc
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'https://stackerly.onrender.com',
-    'https://*.onrender.com',
+    'stackerly.onrender.com',
+    '*.onrender.com',
     '127.0.0.1',
     'localhost'
 ]
