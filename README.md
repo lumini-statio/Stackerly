@@ -30,7 +30,7 @@ stackerly/
 │   ├── components/
 │   ├── management/
 │   ├── migrations/
-│   └── static/
+│   ├── static/
 │   ├── templates/
 │   ├── views/
 │   ├── __init__.py
