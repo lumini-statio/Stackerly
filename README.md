@@ -88,6 +88,7 @@ stackerly/
 ## 🧪 Usage
 
 Open your browser at --> [localhost:8000](http://localhost:8000)
+
 Or go to the main web --> [stackerly.onrender.com](https://stackerly.onrender.com/)
 
 Sign up or log in to manage stores, products, and orders.
@@ -123,7 +124,7 @@ Sign up or log in to manage stores, products, and orders.
 
 ## 🎨 Customization
 
-- **Styles**: Located in `stock/static/css/` (uses Bootstrap 4/5)
+- **Styles**: Located in `stock/static/css/`
 - **Tables**: Customizable in `stock/components/tables.py`
 - **Forms**: Built with crispy-forms, editable in `stock/forms.py`
 
