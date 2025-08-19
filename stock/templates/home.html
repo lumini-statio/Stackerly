@@ -26,10 +26,10 @@
         <div class="col">
             <a href="{% url 'charts' %}" class="btn btn-light w-100" style="view-transition-name: charts;">Charts</a>
         </div>
+        {% if user.is_superuser %}
         <div class="col">
             <a href="{% url 'users' %}" class="btn btn-success w-100" style="view-transition-name: users;">Users</a>
         </div>
-        {% if user.is_superuser %}
         <div class="col">
             <a href="/admin/" class="btn btn-secondary w-100">Admin</a>
         </div>

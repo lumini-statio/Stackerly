@@ -7,7 +7,7 @@
 }
 
 ::view-transition-new(#main-block) {
-    animation: slide-in-from-right 0.5s forwards;
+    animation: slide-in-from-right 0.8s forwards;
 }
 
 @keyframes slide-out-to-left {
