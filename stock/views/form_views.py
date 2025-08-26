@@ -21,7 +21,6 @@ from stock.forms import StoreForm, ProductForm, OrderForm,\
 logger = logging.getLogger(__name__)
 
 
-@cache_page(60 * 15)
 def signup(request):
 
     template_name = 'accounts/signup.html'
@@ -50,7 +49,6 @@ def signup(request):
     return render(request, context=context, template_name=template_name)
 
 
-@cache_page(60 * 15)
 def login_view(request):
     template_name = 'accounts/login.html'
 
