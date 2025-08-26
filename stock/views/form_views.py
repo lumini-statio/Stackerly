@@ -10,6 +10,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import CreateView
+from django.views.decorators.cache import cache_page
 from django.urls import reverse_lazy
 
 from stock.models import Store, Product, Order, CustomUser
@@ -20,6 +21,7 @@ from stock.forms import StoreForm, ProductForm, OrderForm,\
 logger = logging.getLogger(__name__)
 
 
+@cache_page(60 * 15)
 def signup(request):
 
     template_name = 'accounts/signup.html'
@@ -39,7 +41,6 @@ def signup(request):
 
             return redirect('home')
         else:
-            logger.error(f"Error during signup: {str(e)}")
             HttpResponse("Passwords do not match")
 
     context = {
@@ -49,6 +50,7 @@ def signup(request):
     return render(request, context=context, template_name=template_name)
 
 
+@cache_page(60 * 15)
 def login_view(request):
     template_name = 'accounts/login.html'
 
@@ -84,6 +86,8 @@ def login_view(request):
     return render(request, context=context, template_name=template_name)
 
 
+@cache_page(60 * 15)
+@login_required
 def user_form(request):
     template_name = 'form_generic.html'
 
@@ -104,6 +108,8 @@ def user_form(request):
     return render(request, context=context, template_name=template_name)
 
 
+@cache_page(60 * 15)
+@login_required
 class StoreCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = 'form_generic.html'
     form_class = StoreForm
@@ -111,6 +117,7 @@ class StoreCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     success_message = "Store created successfully"
 
 
+@cache_page(60 * 15)
 @login_required
 def product_form(request, store_id):
     template_name = 'form_generic.html'
@@ -138,6 +145,8 @@ def product_form(request, store_id):
     return render(request, context=context, template_name=template_name)
 
 
+@cache_page(60 * 15)
+@login_required
 def buy_product(request, id):
     template_name = 'user-purchase.html'
 
@@ -169,6 +178,7 @@ def buy_product(request, id):
     return render(request, context=context, template_name=template_name)
 
 
+@cache_page(60 * 15)
 @login_required
 def order_form(request, user_id, order_id):
     template_name = 'form_generic.html'

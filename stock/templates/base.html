@@ -33,6 +33,7 @@
 </style>
 
 <body style="height: 100vh; background-color: #111111;">
+
     <div class="d-flex flex-column justify-content-center align-items-center w-100 wt-1">
         {% if messages %}
             {% for message in messages %}
@@ -50,8 +51,10 @@
             {% block content %}
             {% endblock %}
     </main>
-
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    
+    {% cache 900 scripts request.user.id %}
+        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    {% endcache %}
 </body>
 </html>

@@ -4,13 +4,15 @@
 
 {% block content %}
 <div style="view-transition-name: boxes;" class="w-50">
-    <a href="{% url 'home' %}" class="btn btn-dark mb-5">
-        <i class="fa fa-solid fa-arrow-left text-light"></i>
-    </a>
+    {% cache 900 boxes request.user.id %}
+        <a href="{% url 'home' %}" class="btn btn-dark mb-5">
+            <i class="fa fa-solid fa-arrow-left text-light"></i>
+        </a>
 
-    <div class="d-flex justify-content-center mb-5">
-        <h1 style="color: #fff;">Balance Boxes</h1>
-    </div>
+        <div class="d-flex justify-content-center mb-5">
+            <h1 style="color: #fff;">Balance Boxes</h1>
+        </div>
+    {% endcache %}
 
     {% render_table table %}
 </div>

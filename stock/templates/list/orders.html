@@ -5,16 +5,17 @@
 
 {% block content %}
 <div class="w-75 d-flex flex-column align-items-center" style="view-transition-name: my-orders;">
-    <div class="d-flex w-100">
-        <div class="d-flex justify-content-start w-50">
-            <a href="{% url 'home' %}" class="btn btn-dark" style="view-transition-name: home;">
-                <i class="fa fa-solid fa-arrow-left"></i>
-            </a>
+    {% cache 900 orders request.user.id %}
+        <div class="d-flex w-100">
+            <div class="d-flex justify-content-start w-50">
+                <a href="{% url 'home' %}" class="btn btn-dark" style="view-transition-name: home;">
+                    <i class="fa fa-solid fa-arrow-left"></i>
+                </a>
+            </div>
         </div>
-    </div>
-    <div class="d-flex justify-content-center align-items-center">
-        <h1 class="my-5 text-light">Orders</h1>
-    </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <h1 class="my-5 text-light">Orders</h1>
+        </div>
     <div class="w-100">
         {% render_table table %}
     </div>
