@@ -107,7 +107,6 @@ def user_form(request):
     return render(request, context=context, template_name=template_name)
 
 
-@cache_page(60 * 15)
 class StoreCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = 'form_generic.html'
     form_class = StoreForm
