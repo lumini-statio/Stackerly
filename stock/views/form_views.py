@@ -87,7 +87,6 @@ def login_view(request):
 
 
 @cache_page(60 * 15)
-@login_required
 def user_form(request):
     template_name = 'form_generic.html'
 
@@ -109,7 +108,6 @@ def user_form(request):
 
 
 @cache_page(60 * 15)
-@login_required
 class StoreCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = 'form_generic.html'
     form_class = StoreForm
@@ -118,7 +116,6 @@ class StoreCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
 
 @cache_page(60 * 15)
-@login_required
 def product_form(request, store_id):
     template_name = 'form_generic.html'
 
@@ -146,7 +143,6 @@ def product_form(request, store_id):
 
 
 @cache_page(60 * 15)
-@login_required
 def buy_product(request, id):
     template_name = 'user-purchase.html'
 
@@ -179,7 +175,6 @@ def buy_product(request, id):
 
 
 @cache_page(60 * 15)
-@login_required
 def order_form(request, user_id, order_id):
     template_name = 'form_generic.html'
 

@@ -22,14 +22,13 @@ import pandas as pd
 import plotly.graph_objs as go
 from plotly.offline import plot
 
-# Create your views here.
+
 @login_required(login_url='login')
 def logout_view(request):
     logout(request)
     return redirect('login')
 
 
-@login_required
 def users(request):
     template_name = 'list/users.html'
 
@@ -43,7 +42,6 @@ def users(request):
     return render(request, context=context, template_name=template_name)
 
 
-@login_required
 def profile(request):
     template_name = 'profile.html'
 
@@ -65,7 +63,6 @@ def profile(request):
     return render(request, context=context, template_name=template_name)
 
 
-@login_required
 def home(request):
     template_name = 'home.html'
     
@@ -82,7 +79,6 @@ def home(request):
     return render(request, context=context, template_name=template_name)
 
 
-@login_required
 def balance_boxes(request):
     template_name = 'list/balance_boxes.html'
 
@@ -96,7 +92,6 @@ def balance_boxes(request):
     return render(request, context=context, template_name=template_name)
 
 
-@login_required
 def stores(request):
     template_name = 'list/stores.html'
 
@@ -110,7 +105,6 @@ def stores(request):
     return render(request, context=context, template_name=template_name)
 
 
-@login_required
 def products(request, id):
     template_name = 'list/products.html'
 
@@ -126,7 +120,6 @@ def products(request, id):
     return render(request, context=context, template_name=template_name)
 
 
-@login_required
 def orders(request, user_id, order_id):
     template_name = 'list/orders.html'
 
@@ -142,7 +135,6 @@ def orders(request, user_id, order_id):
     return render(request, context=context, template_name=template_name)
 
 
-@login_required
 def profile(request, id):
     template_name = 'profile.html'
 
@@ -169,7 +161,6 @@ def profile(request, id):
     return render(request, context=context, template_name=template_name)
 
 
-@login_required
 def charts(request):
     records = ProfitLossRecord.objects.all().values('date', 'amount', 'record_type')
 
